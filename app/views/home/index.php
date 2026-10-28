@@ -578,6 +578,11 @@
                     <span>Quản lý điểm</span>
                 </a>
 
+                <a href="?controller=auth&action=register" class="menu-link">
+                    <i class="bi bi-person-plus"></i>
+                    <span>Đăng ký mới</span>
+                </a>
+
             </nav>
 
             <!-- Ho tro -->
@@ -619,9 +624,9 @@
                             <p>Quản trị hệ thống</p>
                         </div>
 
-                        <div class="user-icon">
+                        <a href="?controller=auth&action=register" class="user-icon text-white text-decoration-none" title="Đăng ký / Đăng nhập">
                             <i class="bi bi-person-fill"></i>
-                        </div>
+                        </a>
                     </div>
 
                 </div>

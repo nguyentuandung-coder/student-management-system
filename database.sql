@@ -79,3 +79,18 @@ VALUES
 (2, 1, 9.00),
 (2, 3, 8.00),
 (3, 4, 7.50);
+
+
+-- 8. Tao bang users (Nguoi dung: Sinh vien / Giang vien / Quan tri)
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_code VARCHAR(50) NULL,
+    fullname VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    class_name VARCHAR(50) NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'student',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
