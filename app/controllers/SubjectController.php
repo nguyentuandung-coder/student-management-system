@@ -27,7 +27,7 @@ class SubjectController
             $subjectService->addSubject($subject);
         }
 
-        header('Location: ?controller=home');
+        header('Location: ?controller=subject&action=index');
         exit;
     }
 
@@ -59,7 +59,7 @@ class SubjectController
             $subjectService->updateSubject($subject);
         }
 
-        header('Location: ?controller=home');
+        header('Location: ?controller=subject&action=index');
         exit;
     }
 
