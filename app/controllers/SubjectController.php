@@ -1,18 +1,22 @@
 <?php
 require_once APP_ROOT . '/app/services/SubjectService.php';
 
-class SubjectController {
-    public function index() {
+class SubjectController
+{
+    public function index()
+    {
         $subjectService = new SubjectService();
         $subjects = $subjectService->getAllSubjects();
-        include APP_ROOT . '/app/views/home/index.php';
+        include APP_ROOT . '/app/views/subject/index.php';
     }
 
-    public function add() {
+    public function add()
+    {
         include_once APP_ROOT . '/app/views/subject/add.php';
     }
 
-    public function store() {
+    public function store()
+    {
         $code = trim($_POST['code'] ?? '');
         $name = trim($_POST['name'] ?? '');
         $credits = (int)($_POST['credits'] ?? 0);
@@ -27,7 +31,8 @@ class SubjectController {
         exit;
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         if (!empty($id)) {
             $subjectService = new SubjectService();
             $subject = $subjectService->getSubjectById($id);
@@ -42,7 +47,8 @@ class SubjectController {
         }
     }
 
-    public function update($id) {
+    public function update($id)
+    {
         $code = trim($_POST['code'] ?? '');
         $name = trim($_POST['name'] ?? '');
         $credits = (int)($_POST['credits'] ?? 0);
@@ -57,7 +63,8 @@ class SubjectController {
         exit;
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         if (!empty($id)) {
             $subjectService = new SubjectService();
             $subjectService->deleteSubject($id);

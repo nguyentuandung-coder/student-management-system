@@ -17,6 +17,8 @@ $gradeController = new GradeController();
 
 if ($controller == 'home') {
     $homeController->index();
+} else if ($controller == 'subject' && $action == 'index') {
+    $subjectController->index();
 } else if ($controller == 'addSubject' || ($controller == 'subject' && $action == 'add')) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_POST['btn_create'])) {
         $subjectController->store();
