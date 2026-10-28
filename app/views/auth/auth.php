@@ -31,12 +31,19 @@
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
+        /* An icon mat mac dinh tren trinh duyet Microsoft Edge */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
+
         body {
             background: linear-gradient(135deg, #f8f9fe 0%, #edf0fb 100%);
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             padding: 30px 15px;
             color: var(--text-dark);
             margin: 0;
@@ -44,14 +51,14 @@
 
         .auth-container {
             width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
+            max-width: 460px;
+            margin: auto;
         }
 
         /* Top Brand Logo */
         .brand-header {
             text-align: center;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         .brand-logo-link {
@@ -111,7 +118,7 @@
             padding: 5px;
             display: flex;
             gap: 4px;
-            margin-bottom: 28px;
+            margin-bottom: 26px;
         }
 
         .auth-tab-btn {
@@ -149,11 +156,11 @@
 
         /* Title & Subtitle */
         .auth-header {
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .auth-title {
-            font-size: 23px;
+            font-size: 22px;
             font-weight: 700;
             margin: 0 0 6px 0;
             color: #111827;
@@ -169,17 +176,29 @@
 
         /* Form Fields */
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+
+        .form-label-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13.5px;
+            margin-bottom: 6px;
+        }
+
+        .form-label-row label {
+            font-size: 13px;
             font-weight: 600;
             color: #1f2937;
-            margin-bottom: 7px;
+            margin: 0;
         }
 
         .forgot-link {
@@ -204,6 +223,8 @@
         .input-group-custom .input-icon-left {
             position: absolute;
             left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
             color: #4b5563;
             font-size: 18px;
             pointer-events: none;
@@ -238,6 +259,8 @@
         .input-group-custom .toggle-password {
             position: absolute;
             right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
             color: #64748b;
             font-size: 18px;
             cursor: pointer;
@@ -260,7 +283,7 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            margin: 18px 0 22px 0;
+            margin: 16px 0 20px 0;
         }
 
         .form-check-custom input[type="checkbox"] {
@@ -312,88 +335,20 @@
             transform: translateY(0);
         }
 
-        /* Divider */
-        .auth-divider {
-            display: flex;
-            align-items: center;
-            margin: 24px 0 20px 0;
-            text-align: center;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .auth-divider span {
-            padding: 0 12px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #64748b;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        /* Social / SSO Buttons */
-        .sso-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .btn-sso {
-            height: 44px;
-            background-color: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-
-        .btn-sso:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-            color: #1e293b;
-        }
-
         /* Footer Link */
         .auth-footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
-        .back-home-link {
-            font-size: 13px;
-            color: #64748b;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: color 0.15s;
-        }
-
-        .back-home-link:hover {
-            color: var(--primary-purple);
-        }
-
-        /* Animated Tab switching */
+        /* Tab switching */
         .tab-content-panel {
-            display: none;
-            animation: fadeIn 0.25s ease-in-out;
+            display: none !important;
         }
 
         .tab-content-panel.active {
-            display: block;
+            display: block !important;
+            animation: fadeIn 0.25s ease-in-out;
         }
 
         @keyframes fadeIn {
@@ -414,7 +369,7 @@
 
     <!-- Brand Header -->
     <div class="brand-header">
-        <a href="?controller=home" class="brand-logo-link">
+        <div class="brand-logo-link">
             <div class="brand-logo-icon">
                 <i class="bi bi-mortarboard"></i>
             </div>
@@ -422,7 +377,7 @@
                 <h3>StudyHub</h3>
                 <span>Academic Workspace</span>
             </div>
-        </a>
+        </div>
     </div>
 
     <!-- Main Auth Card -->
@@ -612,8 +567,8 @@
 
                 <!-- Mật khẩu -->
                 <div class="form-group">
-                    <div class="form-label">
-                        <label for="login_password" style="margin: 0;">Mật khẩu</label>
+                    <div class="form-label-row">
+                        <label for="login_password">Mật khẩu</label>
                         <a href="javascript:void(0)" onclick="alert('Vui lòng liên hệ Văn phòng Đào tạo & Quản trị Hệ thống để cấp lại mật khẩu.')" class="forgot-link">Quên mật khẩu?</a>
                     </div>
                     <div class="input-group-custom">
