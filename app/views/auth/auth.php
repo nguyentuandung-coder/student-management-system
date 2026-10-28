@@ -649,10 +649,9 @@
 
     <!-- Bottom Footer Links -->
     <div class="auth-footer">
-        <a href="?controller=home" class="back-home-link">
-            <i class="bi bi-arrow-left"></i>
-            <span>Quay về trang chủ StudyHub</span>
-        </a>
+        <span style="font-size: 13px; color: #64748b;">
+            <i class="bi bi-shield-check me-1"></i> Hệ thống xác thực & Quản lý đào tạo StudyHub
+        </span>
     </div>
 
 </div>
