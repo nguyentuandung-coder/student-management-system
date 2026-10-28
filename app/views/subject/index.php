@@ -45,7 +45,7 @@
                                     </a>
                                 </td>
                                 <td class="text-center">
-                                    <a href="?controller=deleteSubject&id=<?= $subject->getId() ?>" class="text-danger fs-5" onclick="return confirm('Bạn có chắc chắn muốn xóa môn học: <?= htmlspecialchars($subject->getName()) ?>?')" title="Xóa">
+                                    <a href="?controller=deleteSubject&id=<?= $subject->getId() ?>" class="text-danger fs-5" title="Xóa môn học">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </td>
