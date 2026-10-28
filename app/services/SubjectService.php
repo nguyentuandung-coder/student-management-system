@@ -1,0 +1,123 @@
+<?php
+require_once APP_ROOT . '/app/models/Subject.php';
+
+class SubjectService {
+
+    public function getAllSubjects() {
+        $subjects = [];
+        $dbConnection = new DBConnection();
+
+        if ($dbConnection != null) {
+            $conn = $dbConnection->getConnection();
+
+            if ($conn != null) {
+                // Tu dong tao bang mon hoc neu chua co
+                $createTableSql = "CREATE TABLE IF NOT EXISTS subjects (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    code VARCHAR(50) NOT NULL,
+                    name VARCHAR(100) NOT NULL,
+                    credits INT NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+                $conn->exec($createTableSql);
+
+                // Tu dong chen du lieu mau neu bang chua co du lieu
+                $count = (int)$conn->query("SELECT COUNT(*) FROM subjects")->fetchColumn();
+                if ($count === 0) {
+                    $seedSql = "INSERT INTO subjects (code, name, credits) VALUES 
+                        ('MH01', 'Lập trình PHP MVC', 3),
+                        ('MH02', 'Cơ sở dữ liệu nâng cao', 4),
+                        ('MH03', 'Mạng máy tính', 3),
+                        ('MH04', 'Cấu trúc dữ liệu và giải thuật', 4),
+                        ('MH05', 'Hệ điều hành', 3)";
+                    $conn->exec($seedSql);
+                }
+
+                $sql = "SELECT * FROM subjects ORDER BY id ASC";
+                $stmt = $conn->query($sql);
+
+                if ($stmt) {
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $subject = new Subject($row['id'], $row['code'], $row['name'], $row['credits']);
+                        $subjects[] = $subject;
+                    }
+                }
+            }
+        }
+        return $subjects;
+    }
+
+    public function getAllSubject() {
+        return $this->getAllSubjects();
+    }
+
+    public function getSubjectById($id) {
+        $dbConnection = new DBConnection();
+
+        if ($dbConnection != null) {
+            $conn = $dbConnection->getConnection();
+
+            if ($conn != null) {
+                $sql = "SELECT * FROM subjects WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute(['id' => $id]);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($row) {
+                    return new Subject($row['id'], $row['code'], $row['name'], $row['credits']);
+                }
+            }
+        }
+        return null;
+    }
+
+    public function addSubject(Subject $subject) {
+        $dbConnection = new DBConnection();
+
+        if ($dbConnection != null) {
+            $conn = $dbConnection->getConnection();
+
+            if ($conn != null) {
+                $sql = "INSERT INTO subjects (code, name, credits) VALUES (:code, :name, :credits)";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([
+                    'code' => $subject->getCode(),
+                    'name' => $subject->getName(),
+                    'credits' => $subject->getCredits()
+                ]);
+            }
+        }
+    }
+
+    public function updateSubject(Subject $subject) {
+        $dbConnection = new DBConnection();
+
+        if ($dbConnection != null) {
+            $conn = $dbConnection->getConnection();
+
+            if ($conn != null) {
+                $sql = "UPDATE subjects SET code = :code, name = :name, credits = :credits WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([
+                    'code' => $subject->getCode(),
+                    'name' => $subject->getName(),
+                    'credits' => $subject->getCredits(),
+                    'id' => $subject->getId()
+                ]);
+            }
+        }
+    }
+
+    public function deleteSubject($id) {
+        $dbConnection = new DBConnection();
+
+        if ($dbConnection != null) {
+            $conn = $dbConnection->getConnection();
+
+            if ($conn != null) {
+                $sql = "DELETE FROM subjects WHERE id = :id";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute(['id' => $id]);
+            }
+        }
+    }
+}
