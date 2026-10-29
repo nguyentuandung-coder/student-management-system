@@ -26,8 +26,13 @@ class GradeService
 
                 $conn->exec($createTableSql);
 
-                // Lay danh sach diem
-                $sql = "SELECT * FROM grades ORDER BY id ASC";
+                [$nameColumn, $classColumn] = $this->getStudentColumns($conn);
+                $sql = "SELECT g.*, s.student_code, s.$nameColumn AS student_name,
+                               s.$classColumn AS student_class, sub.name AS subject_name
+                        FROM grades g
+                        INNER JOIN students s ON s.id = g.student_id
+                        LEFT JOIN subjects sub ON sub.id = g.subject_id
+                        ORDER BY g.id ASC";
                 $stmt = $conn->query($sql);
 
                 if ($stmt) {
@@ -36,7 +41,11 @@ class GradeService
                             $row['id'],
                             $row['student_id'],
                             $row['subject_id'],
-                            $row['score']
+                            $row['score'],
+                            $row['student_code'],
+                            $row['student_name'],
+                            $row['student_class'],
+                            $row['subject_name']
                         );
 
                         $grades[] = $grade;
@@ -61,7 +70,13 @@ class GradeService
             $conn = $dbConnection->getConnection();
 
             if ($conn != null) {
-                $sql = "SELECT * FROM grades WHERE id = :id";
+                [$nameColumn, $classColumn] = $this->getStudentColumns($conn);
+                $sql = "SELECT g.*, s.student_code, s.$nameColumn AS student_name,
+                               s.$classColumn AS student_class, sub.name AS subject_name
+                        FROM grades g
+                        INNER JOIN students s ON s.id = g.student_id
+                        LEFT JOIN subjects sub ON sub.id = g.subject_id
+                        WHERE g.id = :id";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute(['id' => $id]);
 
@@ -72,13 +87,38 @@ class GradeService
                         $row['id'],
                         $row['student_id'],
                         $row['subject_id'],
-                        $row['score']
+                        $row['score'],
+                        $row['student_code'],
+                        $row['student_name'],
+                        $row['student_class'],
+                        $row['subject_name']
                     );
                 }
             }
         }
 
         return null;
+    }
+
+    public function getStudentByCode($studentCode)
+    {
+        $dbConnection = new DBConnection();
+        $conn = $dbConnection->getConnection();
+
+        if ($conn === null) {
+            throw new RuntimeException('Không thể kết nối cơ sở dữ liệu để kiểm tra mã sinh viên.');
+        }
+
+        [$nameColumn, $classColumn] = $this->getStudentColumns($conn);
+        $sql = "SELECT id, student_code, $nameColumn AS student_name,
+                       $classColumn AS student_class
+                FROM students
+                WHERE student_code = :student_code";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['student_code' => $studentCode]);
+
+        $student = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $student ?: null;
     }
 
     public function addGrade(Grade $grade)
@@ -142,5 +182,24 @@ class GradeService
                 $stmt->execute(['id' => $id]);
             }
         }
+    }
+
+    private function getStudentColumns(PDO $conn)
+    {
+        $stmt = $conn->query("SHOW COLUMNS FROM students");
+        $columns = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+        $nameColumn = in_array('full_name', $columns, true)
+            ? 'full_name'
+            : (in_array('name', $columns, true) ? 'name' : null);
+        $classColumn = in_array('class_name', $columns, true)
+            ? 'class_name'
+            : (in_array('class', $columns, true) ? 'class' : null);
+
+        if ($nameColumn === null || $classColumn === null) {
+            throw new RuntimeException('Không tìm thấy cột họ tên hoặc lớp trong bảng students.');
+        }
+
+        return [$nameColumn, $classColumn];
     }
 }
