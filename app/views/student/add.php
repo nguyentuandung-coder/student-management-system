@@ -4,163 +4,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm sinh viên mới - StudyHub</title>
+    <title>Thêm sinh viên - StudyHub</title>
 
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- CSS giao dien chung StudyHub -->
-    <link rel="stylesheet" href="asset/css/style.css">
-
     <style>
-        .form-card {
-            background-color: #ffffff;
-            border: 1px solid #eeeeF5;
-            border-radius: 16px;
-            padding: 35px 32px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            max-width: 760px;
-            margin: 0 auto;
+        :root {
+            --primary: #7c3aed;
+            --primary-soft: #ede9fe;
+            --text: #1f2037;
+            --muted: #8b8ca7;
+            --bg: #f3f2f8;
+            --sidebar-w: 250px;
         }
 
-        .form-card-header {
-            text-align: center;
-            margin-bottom: 28px;
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
         }
 
-        .form-icon-box {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 16px;
-            border-radius: 18px;
-            background-color: #f1edff;
-            color: #6938d3;
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-w);
+            background: #fff;
+            border-right: 1px solid #ecebf5;
+            padding: 20px 14px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 8px 22px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: var(--primary);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            box-shadow: 0 4px 12px rgba(105, 56, 211, 0.12);
+            font-size: 22px;
         }
 
-        .form-title {
-            font-size: 20px;
+        .brand-name {
             font-weight: 700;
-            color: #111827;
-            margin-bottom: 6px;
+            font-size: 18px;
+            line-height: 1.1;
         }
 
-        .form-subtitle {
-            font-size: 13.5px;
-            color: #64748b;
-            margin: 0;
-            line-height: 1.5;
+        .brand-sub {
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-transform: uppercase;
         }
 
-        .form-group-custom {
-            margin-bottom: 20px;
+        .menu-title {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--muted);
+            text-transform: uppercase;
+            padding: 10px 10px 8px;
         }
 
-        .form-label-custom {
-            display: block;
-            font-size: 13.5px;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 7px;
-        }
-
-        .input-wrapper {
-            position: relative;
+        .menu-link {
             display: flex;
             align-items: center;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            color: #64748b;
-            font-size: 17px;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            z-index: 2;
-        }
-
-        .form-input-custom {
-            width: 100%;
-            height: 48px;
-            padding: 0 16px 0 44px;
-            border: 1.5px solid #e2e8f0;
+            gap: 12px;
+            padding: 12px 14px;
+            margin-bottom: 4px;
             border-radius: 12px;
-            font-size: 14px;
-            color: #111827;
-            background-color: #ffffff;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        .form-input-custom::placeholder {
-            color: #94a3b8;
-            font-size: 13.5px;
-        }
-
-        .form-input-custom:focus {
-            border-color: #6938d3;
-            box-shadow: 0 0 0 3.5px rgba(105, 56, 211, 0.12);
-        }
-
-        .form-input-custom:focus-visible {
-            outline: none;
-        }
-
-        .btn-submit-purple {
-            background-color: #6938d3;
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(105, 56, 211, 0.28);
-        }
-
-        .btn-submit-purple:hover {
-            background-color: #5428b6;
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(105, 56, 211, 0.35);
-        }
-
-        .btn-cancel-custom {
-            background-color: #f1f5f9;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            padding: 12px 22px;
-            font-size: 14px;
-            font-weight: 600;
+            color: #5b5c78;
             text-decoration: none;
-            display: inline-flex;
+            font-size: 15px;
+        }
+
+        .menu-link:hover {
+            background: #f6f4ff;
+            color: var(--primary);
+        }
+
+        .menu-link.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ---------- Main ---------- */
+        .main {
+            margin-left: var(--sidebar-w);
+        }
+
+        .topbar {
+            height: 64px;
+            background: #fff;
+            border-bottom: 1px solid #ecebf5;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
+            justify-content: space-between;
+            padding: 0 28px;
         }
 
-        .btn-cancel-custom:hover {
-            background-color: #e2e8f0;
-            color: #1e293b;
+        .topbar h5 {
+            margin: 0;
+            font-weight: 700;
         }
 
-        @media (max-width: 576px) {
-            .form-card {
-                padding: 24px 18px;
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content {
+            padding: 28px;
+        }
+
+        .card-box {
+            max-width: 760px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px 32px;
+            box-shadow: 0 2px 12px rgba(80, 60, 160, 0.06);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+
+        .card-box h3 {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            padding: 10px 14px;
+            border-color: #e2e0ef;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+
+        .btn-main {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 600;
+        }
+
+        .btn-main:hover {
+            background: #6d28d9;
+            color: #fff;
+        }
+
+        .btn-soft {
+            background: var(--primary-soft);
+            border: none;
+            color: var(--primary);
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-weight: 600;
+        }
+
+        .btn-soft:hover {
+            background: #ddd6fe;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .card-box {
+                padding: 22px 18px;
             }
         }
     </style>
@@ -168,330 +252,118 @@
 
 <body>
 
-    <div class="dashboard">
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-
-            <!-- Logo -->
-            <a href="?controller=home" class="logo">
-                <div class="logo-icon">
-                    <i class="bi bi-mortarboard"></i>
-                </div>
-
-                <div class="logo-text">
-                    <h4>StudyHub</h4>
-                    <p>ACADEMIC WORKSPACE</p>
-                </div>
-            </a>
-
-            <!-- Menu -->
-            <p class="menu-title">HỆ THỐNG QUẢN LÝ</p>
-
-            <nav class="menu-links">
-
-                <a href="?controller=home" class="menu-link">
-                    <i class="bi bi-grid"></i>
-                    <span>Trang chủ</span>
-                </a>
-
-                <a href="?controller=student&action=index" class="menu-link active">
-                    <i class="bi bi-people"></i>
-                    <span>Quản lý sinh viên</span>
-                </a>
-
-                <a href="?controller=subject&action=index" class="menu-link">
-                    <i class="bi bi-book"></i>
-                    <span>Quản lý môn học</span>
-                </a>
-
-                <a href="?controller=grade&action=index" class="menu-link">
-                    <i class="bi bi-star"></i>
-                    <span>Quản lý điểm</span>
-                </a>
-
-            </nav>
-
-            <!-- Ho tro -->
-            <div class="support-box">
-                <div class="support-icon">
-                    <i class="bi bi-question-circle"></i>
-                </div>
-
-                <div>
-                    <strong>Hỗ trợ kỹ thuật</strong>
-                    <p>Phòng đào tạo & CNTT</p>
-                </div>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+            <div>
+                <div class="brand-name">StudyHub</div>
+                <div class="brand-sub">Academic Workspace</div>
             </div>
+        </div>
 
-        </aside>
+        <div class="menu-title">Hệ thống quản lý</div>
 
+        <a href="?controller=home" class="menu-link">
+            <i class="bi bi-grid"></i> Trang chủ
+        </a>
+        <a href="?controller=home" class="menu-link active">
+            <i class="bi bi-people"></i> Quản lý sinh viên
+        </a>
+        <a href="?controller=subject&action=index" class="menu-link">
+            <i class="bi bi-book"></i> Quản lý môn học
+        </a>
+        <a href="?controller=grade&action=index" class="menu-link">
+            <i class="bi bi-star"></i> Quản lý điểm
+        </a>
+    </aside>
 
-        <!-- KHU VUC NOI DUNG -->
-        <div class="main-area">
+    <!-- Main -->
+    <div class="main">
 
-            <!-- HEADER -->
-            <header class="top-header">
+        <div class="topbar">
+            <h5>Thêm sinh viên</h5>
 
-                <h5 class="header-title">Quản lý sinh viên • Thêm mới</h5>
+            <div class="user-box">
+                <div class="user-name">
+                    Quản trị viên
+                    <div class="user-role">Quản trị hệ thống</div>
+                </div>
+                <div class="avatar"><i class="bi bi-person-fill"></i></div>
+            </div>
+        </div>
 
-                <div class="header-right">
+        <div class="content">
+            <div class="card-box">
 
-                    <button type="button" class="header-button" title="Thông báo">
-                        <i class="bi bi-bell"></i>
-                    </button>
+                <span class="tag"><i class="bi bi-person-plus-fill me-1"></i> Sinh viên mới</span>
+                <h3>Thêm sinh viên mới</h3>
+                <div class="card-sub">Nhập đầy đủ thông tin để tạo hồ sơ sinh viên trong hệ thống.</div>
 
-                    <button type="button" class="header-button" title="Lịch">
-                        <i class="bi bi-calendar-event"></i>
-                    </button>
+                <form action="?controller=student&action=store" method="post">
 
-                    <div class="user-info">
-                        <div class="text-end">
-                            <strong>
-                                <?= htmlspecialchars($_SESSION['user_name'] ?? 'Quản trị viên') ?>
-                            </strong>
+                    <div class="row g-3">
 
-                            <p>
-                                <?= (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'student')
-                                    ? 'Sinh viên'
-                                    : ((isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'teacher')
-                                        ? 'Giảng viên'
-                                        : 'Quản trị hệ thống') ?>
-                            </p>
+                        <div class="col-md-6">
+                            <label for="student_code" class="form-label">Mã sinh viên</label>
+                            <input type="text" class="form-control" id="student_code" name="student_code"
+                                maxlength="20" placeholder="Nhập mã sinh viên" required>
                         </div>
 
-                        <div class="user-icon">
-                            <i class="bi bi-person-fill"></i>
+                        <div class="col-md-6">
+                            <label for="full_name" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name"
+                                maxlength="100" placeholder="Nhập họ và tên" required>
                         </div>
 
-                        <a href="?controller=auth&action=logout"
-                            class="header-button text-danger text-decoration-none d-flex align-items-center justify-content-center ms-2"
-                            title="Đăng xuất"
-                            onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')">
-                            <i class="bi bi-box-arrow-right fs-5"></i>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                maxlength="100" placeholder="Nhập email" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phone" name="phone"
+                                maxlength="20" placeholder="Nhập số điện thoại" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="class_name" class="form-label">Lớp</label>
+                            <input type="text" class="form-control" id="class_name" name="class_name"
+                                maxlength="50" placeholder="Nhập tên lớp" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="date_of_birth" class="form-label">Ngày sinh</label>
+                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="gender" class="form-label">Giới tính</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-main" name="btn_create">
+                            <i class="bi bi-check-circle me-1"></i> Lưu sinh viên
+                        </button>
+                        <a href="?controller=home" class="btn btn-soft">
+                            <i class="bi bi-arrow-left me-1"></i> Quay lại danh sách
                         </a>
                     </div>
 
-                </div>
-
-            </header>
-
-
-            <!-- NOI DUNG CHINH -->
-            <main class="content">
-
-                <!-- Nut quay lai -->
-                <div class="mb-3">
-                    <a href="?controller=student&action=index"
-                        class="btn btn-sm btn-outline-secondary"
-                        style="border-radius: 8px;">
-                        <i class="bi bi-arrow-left me-1"></i>
-                        Quay lại danh sách sinh viên
-                    </a>
-                </div>
-
-
-                <!-- FORM CARD -->
-                <div class="form-card">
-
-                    <div class="form-card-header">
-
-                        <div class="form-icon-box">
-                            <i class="bi bi-person-plus"></i>
-                        </div>
-
-                        <h3 class="form-title">Thêm sinh viên mới</h3>
-
-                        <p class="form-subtitle">
-                            Nhập thông tin sinh viên để bổ sung vào hệ thống StudyHub.
-                        </p>
-
-                    </div>
-
-
-                    <form action="?controller=addStudent" method="POST">
-
-                        <!-- Ma sinh vien -->
-                        <div class="form-group-custom">
-                            <label for="student_code" class="form-label-custom">
-                                Mã sinh viên <span class="text-danger">*</span>
-                            </label>
-
-                            <div class="input-wrapper">
-                                <span class="input-icon">
-                                    <i class="bi bi-upc-scan"></i>
-                                </span>
-
-                                <input type="text"
-                                    class="form-input-custom"
-                                    id="student_code"
-                                    name="student_code"
-                                    placeholder="Ví dụ: SV001"
-                                    maxlength="20"
-                                    required>
-                            </div>
-                        </div>
-
-
-                        <!-- Ho va ten -->
-                        <div class="form-group-custom">
-                            <label for="full_name" class="form-label-custom">
-                                Họ và tên <span class="text-danger">*</span>
-                            </label>
-
-                            <div class="input-wrapper">
-                                <span class="input-icon">
-                                    <i class="bi bi-person"></i>
-                                </span>
-
-                                <input type="text"
-                                    class="form-input-custom"
-                                    id="full_name"
-                                    name="full_name"
-                                    placeholder="Nhập họ và tên sinh viên"
-                                    maxlength="100"
-                                    required>
-                            </div>
-                        </div>
-
-
-                        <!-- Email -->
-                        <div class="form-group-custom">
-                            <label for="email" class="form-label-custom">
-                                Email
-                            </label>
-
-                            <div class="input-wrapper">
-                                <span class="input-icon">
-                                    <i class="bi bi-envelope"></i>
-                                </span>
-
-                                <input type="email"
-                                    class="form-input-custom"
-                                    id="email"
-                                    name="email"
-                                    placeholder="Ví dụ: sinhvien@example.com"
-                                    maxlength="100">
-                            </div>
-                        </div>
-
-
-                        <!-- So dien thoai -->
-                        <div class="form-group-custom">
-                            <label for="phone" class="form-label-custom">
-                                Số điện thoại
-                            </label>
-
-                            <div class="input-wrapper">
-                                <span class="input-icon">
-                                    <i class="bi bi-telephone"></i>
-                                </span>
-
-                                <input type="tel"
-                                    class="form-input-custom"
-                                    id="phone"
-                                    name="phone"
-                                    placeholder="Nhập số điện thoại"
-                                    maxlength="20">
-                            </div>
-                        </div>
-
-
-                        <!-- Lop -->
-                        <div class="form-group-custom">
-                            <label for="class_name" class="form-label-custom">
-                                Lớp <span class="text-danger">*</span>
-                            </label>
-
-                            <div class="input-wrapper">
-                                <span class="input-icon">
-                                    <i class="bi bi-building"></i>
-                                </span>
-
-                                <input type="text"
-                                    class="form-input-custom"
-                                    id="class_name"
-                                    name="class_name"
-                                    placeholder="Ví dụ: 66HTTT1"
-                                    maxlength="50"
-                                    required>
-                            </div>
-                        </div>
-
-
-                        <!-- Ngay sinh -->
-                        <div class="form-group-custom">
-                            <label for="date_of_birth" class="form-label-custom">
-                                Ngày sinh
-                            </label>
-
-                            <div class="input-wrapper">
-                                <span class="input-icon">
-                                    <i class="bi bi-calendar-date"></i>
-                                </span>
-
-                                <input type="date"
-                                    class="form-input-custom"
-                                    id="date_of_birth"
-                                    name="date_of_birth">
-                            </div>
-                        </div>
-
-
-                        <!-- Gioi tinh -->
-                        <div class="form-group-custom">
-                            <label for="gender" class="form-label-custom">
-                                Giới tính <span class="text-danger">*</span>
-                            </label>
-
-                            <div class="input-wrapper">
-                                <span class="input-icon">
-                                    <i class="bi bi-gender-ambiguous"></i>
-                                </span>
-
-                                <select class="form-input-custom"
-                                    id="gender"
-                                    name="gender"
-                                    required>
-                                    <option value="">-- Chọn giới tính --</option>
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
-                                    <option value="Khác">Khác</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <!-- Action buttons -->
-                        <div class="d-flex justify-content-end gap-2 mt-4 pt-2">
-
-                            <a href="?controller=student&action=index"
-                                class="btn-cancel-custom">
-                                <i class="bi bi-x-circle"></i>
-                                <span>Hủy bỏ</span>
-                            </a>
-
-                            <button type="submit"
-                                name="btn_create"
-                                class="btn-submit-purple">
-                                <i class="bi bi-check2-circle"></i>
-                                <span>Lưu sinh viên</span>
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </main>
-
+                </form>
+            </div>
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
