@@ -78,7 +78,7 @@ else if ($controller === 'home' || empty($controller)) {
     $homeController->index();
 }
 // Quan ly sinh vien
-else if ($controller === 'student' && $action === 'index') {
+else if ($controller === 'student' && ($action === 'index' || empty($action))) {
     $studentController->index();
 } else if ($controller === 'addStudent' || ($controller === 'student' && $action === 'add')) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -95,12 +95,10 @@ else if ($controller === 'student' && $action === 'index') {
 } else if ($controller === 'deleteStudent' || ($controller === 'student' && $action === 'delete')) {
     $studentController->delete($id);
 }
-else if ($controller == 'subject' && $action == 'index') {
-    $subjectController->index();
-} else if ($controller == 'addSubject' || ($controller == 'subject' && $action == 'add')) {
-}
 // Quan ly mon hoc
-else if ($controller === 'addSubject' || ($controller === 'subject' && $action === 'add')) {
+else if ($controller === 'subject' && ($action === 'index' || empty($action))) {
+    $subjectController->index();
+} else if ($controller === 'addSubject' || ($controller === 'subject' && $action === 'add')) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_POST['btn_create'])) {
         $subjectController->store();
     } else {
@@ -118,7 +116,7 @@ else if ($controller === 'addSubject' || ($controller === 'subject' && $action =
     $subjectController->delete($id);
 }
 // Hien thi danh sach diem
-else if ($controller === 'grade' && $action === 'index') {
+else if ($controller === 'grade' && ($action === 'index' || empty($action))) {
     $gradeController->index();
 } else if ($controller === 'addGrade' || ($controller === 'grade' && $action === 'add')) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_POST['btn_create'])) {
