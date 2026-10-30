@@ -9,10 +9,16 @@ USE testdb;
 
 -- 2. Tao bang students (Sinh vien)
 CREATE TABLE IF NOT EXISTS students (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    student_code VARCHAR(50) NOT NULL UNIQUE,
-    name VARCHAR(100) NOT NULL,
-    class VARCHAR(50) NOT NULL
+  id            INT(11)      NOT NULL AUTO_INCREMENT,
+  student_code  VARCHAR(50)  NOT NULL,
+  full_name     VARCHAR(100) NOT NULL,
+  email         VARCHAR(100) DEFAULT NULL,
+  phone         VARCHAR(20)  DEFAULT NULL,
+  class_name    VARCHAR(50)  DEFAULT NULL,
+  date_of_birth DATE         DEFAULT NULL,
+  gender        VARCHAR(10)  DEFAULT NULL,
+    PRIMARY KEY (id),
+  UNIQUE KEY student_code (student_code)
 ) ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
@@ -54,11 +60,11 @@ COLLATE=utf8mb4_unicode_ci;
 
 
 -- 5. Them du lieu mau cho students
-INSERT INTO students (student_code, name, class)
-VALUES
-('SV001', 'Nguyen Van An', '66HTTT1'),
-('SV002', 'Tran Thi Binh', '66HTTT1'),
-('SV003', 'Le Van Cuong', '66HTTT2');
+-- Dữ liệu mẫu
+INSERT INTO students (student_code, full_name, email, phone, class_name, date_of_birth, gender) VALUES
+('SV001', 'Nguyễn Văn An',  'an@example.com',  '0901234567', 'CNTT01', '2004-03-15', 'Nam'),
+('SV002', 'Trần Thị Bình',  'binh@example.com', '0912345678', 'CNTT01', '2004-07-22', 'Nữ'),
+('SV003', 'Lê Minh Cường',  'cuong@example.com','0923456789', 'CNTT02', '2003-11-05', 'Nam');
 
 
 -- 6. Them du lieu mau cho subjects
