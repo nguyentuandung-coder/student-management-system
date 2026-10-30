@@ -145,7 +145,7 @@
                         <div class="stat-top">
                             <div>
                                 <p class="stat-label">TỔNG SỐ SINH VIÊN</p>
-                                <h2 class="stat-number">--</h2>
+                                <h2 class="stat-number"><?= number_format(count($students)) ?></h2>
                             </div>
 
                             <div class="stat-icon">
@@ -167,7 +167,7 @@
                         <div class="stat-top">
                             <div>
                                 <p class="stat-label">TỔNG SỐ MÔN HỌC</p>
-                                <h2 class="stat-number">--</h2>
+                                <h2 class="stat-number"><?= number_format(count($subjects)) ?></h2>
                             </div>
 
                             <div class="stat-icon">
@@ -189,7 +189,9 @@
                         <div class="stat-top">
                             <div>
                                 <p class="stat-label">ĐIỂM TRUNG BÌNH</p>
-                                <h2 class="stat-number">--</h2>
+                                <h2 class="stat-number">
+                                    <?= $averageScore !== null ? number_format($averageScore, 2) : '--' ?>
+                                </h2>
                             </div>
 
                             <div class="stat-icon">
@@ -198,7 +200,7 @@
                         </div>
 
                         <p class="stat-description">
-                            Thống kê kết quả học tập của sinh viên
+                            Điểm trung bình trên thang điểm 10
                         </p>
 
                         <div class="progress-line">

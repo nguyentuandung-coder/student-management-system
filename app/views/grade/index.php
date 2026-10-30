@@ -308,7 +308,7 @@
                                                     <a href="?controller=editGrade&id=<?= urlencode((string)$grade->getId()); ?>" class="btn-action-edit" title="Chỉnh sửa điểm">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
-                                                    <a href="?controller=deleteGrade&id=<?= urlencode((string)$grade->getId()); ?>" class="btn-action-delete" title="Xóa điểm" onclick="return confirm('Bạn có chắc chắn muốn xóa điểm này không?')">
+                                                    <a href="?controller=deleteGrade&id=<?= urlencode((string)$grade->getId()); ?>" class="btn-action-delete" title="Xóa điểm">
                                                         <i class="bi bi-trash3"></i>
                                                     </a>
                                                 </div>

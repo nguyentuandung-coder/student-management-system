@@ -220,7 +220,7 @@
                             <div class="input-wrapper">
                                 <span class="input-icon"><i class="bi bi-book"></i></span>
                                 <input type="number" class="form-input-custom" id="subject_id" name="subject_id"
-                                    min="1" placeholder="Nhập ID môn học" required>
+                                    min="1" placeholder="Nhập ID môn học đã tồn tại" required>
                             </div>
                         </div>
 
