@@ -218,7 +218,7 @@
                             <div class="input-wrapper">
                                 <span class="input-icon"><i class="bi bi-book"></i></span>
                                 <input type="number" class="form-input-custom" id="subject_id" name="subject_id"
-                                    min="1" placeholder="Nhập ID môn học đã tồn tại" required>
+                                    min="1" value="<?= htmlspecialchars((string)($subject_id ?? '')); ?>" placeholder="Nhập ID môn học đã tồn tại" required>
                             </div>
                         </div>
 
@@ -227,7 +227,7 @@
                             <div class="input-wrapper">
                                 <span class="input-icon"><i class="bi bi-award"></i></span>
                                 <input type="number" class="form-input-custom" id="score" name="score"
-                                    min="0" max="10" step="0.01" placeholder="Nhập điểm từ 0 đến 10" required>
+                                    min="0" max="10" step="0.01" value="<?= htmlspecialchars((string)($scoreInput ?? '')); ?>" placeholder="Nhập điểm từ 0 đến 10" required>
                             </div>
                         </div>
 

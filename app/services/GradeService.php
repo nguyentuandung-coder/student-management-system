@@ -1,5 +1,5 @@
-
 <?php
+require_once APP_ROOT . '/app/libs/DbConnection.php';
 require_once APP_ROOT . '/app/models/Grade.php';
 
 class GradeService
@@ -119,6 +119,49 @@ class GradeService
 
         $student = $stmt->fetch(PDO::FETCH_ASSOC);
         return $student ?: null;
+    }
+
+    public function getSubjectById($subjectId)
+    {
+        $dbConnection = new DBConnection();
+        $conn = $dbConnection->getConnection();
+
+        if ($conn === null) {
+            return null;
+        }
+
+        $stmt = $conn->prepare("SELECT * FROM subjects WHERE id = :id");
+        $stmt->execute(['id' => $subjectId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+    /**
+     * Kiem tra xem sinh vien da co ban ghi diem cho mon hoc nay chua
+     */
+    public function hasGradeForSubject($studentId, $subjectId, $excludeId = null)
+    {
+        $dbConnection = new DBConnection();
+        $conn = $dbConnection->getConnection();
+
+        if ($conn === null) {
+            return false;
+        }
+
+        $sql = "SELECT COUNT(*) FROM grades WHERE student_id = :student_id AND subject_id = :subject_id";
+        $params = [
+            'student_id' => $studentId,
+            'subject_id' => $subjectId
+        ];
+
+        if (!empty($excludeId)) {
+            $sql .= " AND id != :exclude_id";
+            $params['exclude_id'] = $excludeId;
+        }
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+
+        return ((int)$stmt->fetchColumn()) > 0;
     }
 
     public function addGrade(Grade $grade)
