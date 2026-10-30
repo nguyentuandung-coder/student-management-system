@@ -9,6 +9,7 @@ class UserService {
         $db = new DbConnection();
         $this->conn = $db->getConnection();
         $this->createTableIfNotExists();
+        $this->seedAdminIfNotExists();
     }
 
     private function createTableIfNotExists() {
@@ -23,11 +24,35 @@ class UserService {
             email VARCHAR(100) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             class_name VARCHAR(50) NULL,
-            role VARCHAR(20) NOT NULL DEFAULT 'student',
+            role VARCHAR(20) NOT NULL DEFAULT 'admin',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
         $this->conn->exec($sql);
+    }
+
+    /**
+     * Tu dong khoi tao tai khoan Quan tri vien mac dinh neu chua co
+     */
+    public function seedAdminIfNotExists() {
+        if ($this->conn == null) {
+            return;
+        }
+
+        try {
+            $stmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE role = 'admin' OR email = 'admin@studyhub.edu.vn'");
+            $stmt->execute();
+            $count = (int)$stmt->fetchColumn();
+
+            if ($count === 0) {
+                $hashedPassword = password_hash('admin123', PASSWORD_BCRYPT);
+                $insert = $this->conn->prepare("INSERT INTO users (student_code, fullname, email, password, class_name, role) 
+                                                VALUES ('ADMIN01', 'Quản trị viên Hệ thống', 'admin@studyhub.edu.vn', :password, 'Phòng Đào tạo', 'admin')");
+                $insert->execute([':password' => $hashedPassword]);
+            }
+        } catch (Exception $e) {
+            // Khong ngat chuong trinh neu gap loi ghi
+        }
     }
 
     public function emailExists($email) {
@@ -35,130 +60,6 @@ class UserService {
         $stmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
         $stmt->execute([':email' => trim($email)]);
         return (int)$stmt->fetchColumn() > 0;
-    }
-
-    public function studentCodeExists($studentCode) {
-        if ($this->conn == null || empty($studentCode)) return false;
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE student_code = :code");
-        $stmt->execute([':code' => trim($studentCode)]);
-        return (int)$stmt->fetchColumn() > 0;
-    }
-
-    public function register($studentCode, $fullname, $email, $password, $confirmPassword, $className = '', $agreeTerms = true) {
-        if ($this->conn == null) {
-            return ['success' => false, 'message' => 'Không thể kết nối cơ sở dữ liệu! Vui lòng kiểm tra lại MySQL trong XAMPP.'];
-        }
-
-        $fullname = trim($fullname);
-        $studentCode = strtoupper(trim($studentCode));
-        $email = strtolower(trim($email));
-        $className = trim($className);
-
-        // Validation
-        if (empty($fullname)) {
-            return ['success' => false, 'message' => 'Vui lòng nhập họ và tên của bạn!'];
-        }
-
-        if (empty($email)) {
-            return ['success' => false, 'message' => 'Vui lòng nhập địa chỉ email!'];
-        }
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['success' => false, 'message' => 'Định dạng email không hợp lệ (VD: sv.an@studyhub.edu.vn)!'];
-        }
-
-        if (empty($password)) {
-            return ['success' => false, 'message' => 'Vui lòng nhập mật khẩu!'];
-        }
-
-        if (strlen($password) < 6) {
-            return ['success' => false, 'message' => 'Mật khẩu phải có ít nhất 6 ký tự!'];
-        }
-
-        if ($password !== $confirmPassword) {
-            return ['success' => false, 'message' => 'Mật khẩu xác nhận không khớp!'];
-        }
-
-        if (!$agreeTerms) {
-            return ['success' => false, 'message' => 'Bạn cần đồng ý với Điều khoản sử dụng và Chính sách của hệ thống!'];
-        }
-
-        if ($this->emailExists($email)) {
-            return ['success' => false, 'message' => 'Email này đã được sử dụng. Vui lòng chọn email khác hoặc chuyển sang Đăng nhập!'];
-        }
-
-        if (!empty($studentCode) && $this->studentCodeExists($studentCode)) {
-            return ['success' => false, 'message' => 'Mã định danh này đã tồn tại trong hệ thống!'];
-        }
-
-        // Tự động phân loại role dựa trên mã định danh hoặc email
-        $role = 'student';
-        if (str_starts_with($studentCode, 'GV') || str_contains($email, 'gv.') || str_contains($email, 'giaovu')) {
-            $role = 'teacher';
-        }
-
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        try {
-            $stmt = $this->conn->prepare("INSERT INTO users (student_code, fullname, email, password, class_name, role) 
-                                          VALUES (:student_code, :fullname, :email, :password, :class_name, :role)");
-            $stmt->execute([
-                ':student_code' => !empty($studentCode) ? $studentCode : null,
-                ':fullname' => $fullname,
-                ':email' => $email,
-                ':password' => $hashedPassword,
-                ':class_name' => !empty($className) ? $className : null,
-                ':role' => $role
-            ]);
-
-            // Dong bo sang bang students neu la sinh vien va co ma sinh vien
-            if (!empty($studentCode) && $role === 'student') {
-                try {
-                    $checkStudent = $this->conn->prepare("SELECT COUNT(*) FROM students WHERE student_code = :code");
-                    $checkStudent->execute([':code' => $studentCode]);
-                    if ((int)$checkStudent->fetchColumn() === 0) {
-                        $studentCols = $this->conn->query("SHOW COLUMNS FROM students")->fetchAll(PDO::FETCH_COLUMN);
-                        $nameCol = in_array('full_name', $studentCols) ? 'full_name' : (in_array('name', $studentCols) ? 'name' : null);
-                        $classCol = in_array('class_name', $studentCols) ? 'class_name' : (in_array('class', $studentCols) ? 'class' : null);
-                        $emailCol = in_array('email', $studentCols) ? 'email' : null;
-
-                        if ($nameCol) {
-                            $fields = ['student_code', $nameCol];
-                            $params = [':code' => $studentCode, ':name' => $fullname];
-                            $placeholders = [':code', ':name'];
-
-                            if ($classCol && !empty($className)) {
-                                $fields[] = $classCol;
-                                $params[':class'] = $className;
-                                $placeholders[] = ':class';
-                            }
-
-                            if ($emailCol && !empty($email)) {
-                                $fields[] = $emailCol;
-                                $params[':email'] = $email;
-                                $placeholders[] = ':email';
-                            }
-
-                            $sql = "INSERT INTO students (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
-                            $insertStudent = $this->conn->prepare($sql);
-                            $insertStudent->execute($params);
-                        }
-                    }
-                } catch (Exception $ex) {
-                    // Ghi nhan hoac bo qua loi dong bo sang students
-                }
-            }
-
-            return [
-                'success' => true,
-                'message' => 'Đăng ký tài khoản thành công! Bạn có thể sử dụng thông tin này để đăng nhập.'
-            ];
-        } catch (PDOException $e) {
-            return [
-                'success' => false,
-                'message' => 'Lỗi lưu dữ liệu: ' . $e->getMessage()
-            ];
-        }
     }
 
     public function findByEmailOrCode($identifier) {
@@ -188,13 +89,27 @@ class UserService {
     }
 
     public function login($identifier, $password) {
+        if ($this->conn == null) {
+            return ['success' => false, 'message' => 'Không thể kết nối cơ sở dữ liệu! Vui lòng kiểm tra lại MySQL trong XAMPP.'];
+        }
+
+        $identifier = trim($identifier);
+        if (empty($identifier) || empty($password)) {
+            return ['success' => false, 'message' => 'Vui lòng nhập đầy đủ thông tin đăng nhập!'];
+        }
+
         $user = $this->findByEmailOrCode($identifier);
         if (!$user) {
-            return ['success' => false, 'message' => 'Tài khoản hoặc mã sinh viên không tồn tại!'];
+            return ['success' => false, 'message' => 'Tài khoản hoặc mã quản trị viên không tồn tại!'];
         }
 
         if (!password_verify($password, $user->getPassword())) {
-            return ['success' => false, 'message' => 'Mật khẩu không chính xác!'];
+            return ['success' => false, 'message' => 'Mật khẩu quản trị viên không chính xác!'];
+        }
+
+        // Kiem tra phan quyen: Chi cho phep tai khoan co role 'admin'
+        if ($user->getRole() !== 'admin') {
+            return ['success' => false, 'message' => 'Tài khoản của bạn không có quyền truy cập vào Cổng Quản Trị Hệ Thống!'];
         }
 
         return [

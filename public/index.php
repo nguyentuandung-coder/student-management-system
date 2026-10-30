@@ -25,29 +25,18 @@ $studentController = new StudentController();
 // Kiem tra trang thai dang nhap
 $isLoggedIn = isset($_SESSION['user_id']);
 
-// Neu nguoi dung chua dang nhap -> Chi cho phep cac chuc nang xac thuc (login, register, auth)
+// Neu nguoi dung chua dang nhap -> Chi cho phep dang nhap
 if (!$isLoggedIn) {
     if ($controller === 'auth') {
-        if ($action === 'register') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $authController->processRegister();
-            } else {
-                $authController->register();
-            }
-        } else if ($action === 'login') {
+        if ($action === 'login' || empty($action)) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $authController->processLogin();
             } else {
                 $authController->login();
             }
         } else {
-            $authController->login();
-        }
-    } else if ($controller === 'register') {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $authController->processRegister();
-        } else {
-            $authController->register();
+            header('Location: ?controller=auth&action=login');
+            exit;
         }
     } else if ($controller === 'login') {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -56,20 +45,25 @@ if (!$isLoggedIn) {
             $authController->login();
         }
     } else {
-        // Khi bam vao web (hoac chua dang nhap) -> Hien luon form dang nhap
+        // Mac dinh hien thi trang dang nhap Quan tri
         $authController->login();
     }
     exit;
 }
 
-// Khi nguoi dung da dang nhap:
-// Neu co truy cap lai trang login/register -> Chuyen huong ve trang chu
+// Kiem tra phan quyen: Chi cho phep Quan tri vien ('admin')
+if (($_SESSION['user_role'] ?? '') !== 'admin') {
+    $authController->logout();
+    exit;
+}
+
+// Khi da dang nhap: Neu truy cap login/register -> Chuyen huong ve trang chu
 if ($controller === 'login' || $controller === 'register' || ($controller === 'auth' && $action !== 'logout')) {
     header('Location: ?controller=home');
     exit;
 }
 
-// Cac tuyen duong cho nguoi dung da dang nhap
+// Cac tuyen duong cho Quan tri vien da dang nhap
 if ($controller === 'logout' || ($controller === 'auth' && $action === 'logout')) {
     $authController->logout();
 }
