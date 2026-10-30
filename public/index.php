@@ -10,6 +10,7 @@ require_once APP_ROOT . '/app/controllers/HomeController.php';
 require_once APP_ROOT . '/app/controllers/SubjectController.php';
 require_once APP_ROOT . '/app/controllers/GradeController.php';
 require_once APP_ROOT . '/app/controllers/AuthController.php';
+require_once APP_ROOT . '/app/controllers/StudentController.php';
 
 $controller = isset($_GET['controller']) ? $_GET['controller'] : '';
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -19,6 +20,7 @@ $homeController = new HomeController();
 $subjectController = new SubjectController();
 $gradeController = new GradeController();
 $authController = new AuthController();
+$studentController = new StudentController();
 
 // Kiem tra trang thai dang nhap
 $isLoggedIn = isset($_SESSION['user_id']);
@@ -74,7 +76,26 @@ if ($controller === 'logout' || ($controller === 'auth' && $action === 'logout')
 // Trang chu
 else if ($controller === 'home' || empty($controller)) {
     $homeController->index();
-} else if ($controller == 'subject' && $action == 'index') {
+}
+// Quan ly sinh vien
+else if ($controller === 'student' && $action === 'index') {
+    $studentController->index();
+} else if ($controller === 'addStudent' || ($controller === 'student' && $action === 'add')) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $studentController->store();
+    } else {
+        $studentController->add();
+    }
+} else if ($controller === 'editStudent' || ($controller === 'student' && $action === 'edit')) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $studentController->update($id);
+    } else {
+        $studentController->edit($id);
+    }
+} else if ($controller === 'deleteStudent' || ($controller === 'student' && $action === 'delete')) {
+    $studentController->delete($id);
+}
+else if ($controller == 'subject' && $action == 'index') {
     $subjectController->index();
 } else if ($controller == 'addSubject' || ($controller == 'subject' && $action == 'add')) {
 }
