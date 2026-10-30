@@ -256,16 +256,7 @@
             </nav>
 
             <!-- Ho tro -->
-            <div class="support-box">
-                <div class="support-icon">
-                    <i class="bi bi-question-circle"></i>
-                </div>
 
-                <div>
-                    <strong>Hỗ trợ kỹ thuật</strong>
-                    <p>Phòng đào tạo & CNTT</p>
-                </div>
-            </div>
 
         </aside>
 
