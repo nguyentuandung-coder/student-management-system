@@ -176,8 +176,6 @@
         }
 
         .user-info {
-            border-left: 1px solid #ddddE8;
-            padding-left: 20px;
             display: flex;
             align-items: center;
             gap: 10px;

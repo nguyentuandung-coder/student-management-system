@@ -252,14 +252,6 @@
 
                 <div class="header-right">
 
-                    <button type="button" class="header-button" title="Thông báo">
-                        <i class="bi bi-bell"></i>
-                    </button>
-
-                    <button type="button" class="header-button" title="Lịch">
-                        <i class="bi bi-calendar-event"></i>
-                    </button>
-
                     <div class="user-info">
 
                         <div class="text-end">
