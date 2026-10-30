@@ -120,15 +120,30 @@ class GradeController
         include APP_ROOT . '/app/views/grade/edit.php';
     }
 
-    // Xoa diem
+    // Xoa diem: GET -> Trang xac nhan xoa (delete.php), POST -> Thuc hien xoa
     public function delete($id)
     {
-        if (!empty($id)) {
-            $gradeService = new GradeService();
-            $gradeService->deleteGrade($id);
+        if (empty($id)) {
+            header('Location: ?controller=grade&action=index');
+            exit;
         }
 
-        header('Location: ?controller=grade&action=index');
-        exit;
+        $gradeService = new GradeService();
+
+        // Neu la POST hoac bam nut xac nhan xoa -> Thuc hien xoa trong CSDL
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_POST['btn_confirm_delete'])) {
+            $gradeService->deleteGrade($id);
+            header('Location: ?controller=grade&action=index');
+            exit;
+        }
+
+        // Neu la GET -> Hien thi giao dien xac nhan xoa (delete.php)
+        $grade = $gradeService->getGradeById($id);
+        if ($grade == null) {
+            header('Location: ?controller=grade&action=index');
+            exit;
+        }
+
+        include APP_ROOT . '/app/views/grade/delete.php';
     }
 }
