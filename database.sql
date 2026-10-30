@@ -27,7 +27,7 @@ COLLATE=utf8mb4_unicode_ci;
 -- 3. Tao bang subjects (Mon hoc)
 CREATE TABLE IF NOT EXISTS subjects (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    code VARCHAR(50) NOT NULL,
+    code VARCHAR(50) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     credits INT NOT NULL
 ) ENGINE=InnoDB

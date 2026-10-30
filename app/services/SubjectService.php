@@ -1,4 +1,5 @@
 <?php
+require_once APP_ROOT . '/app/libs/DbConnection.php';
 require_once APP_ROOT . '/app/models/Subject.php';
 
 class SubjectService {
@@ -14,7 +15,7 @@ class SubjectService {
                 // Tu dong tao bang mon hoc neu chua co
                 $createTableSql = "CREATE TABLE IF NOT EXISTS subjects (
                     id INT PRIMARY KEY AUTO_INCREMENT,
-                    code VARCHAR(50) NOT NULL,
+                    code VARCHAR(50) NOT NULL UNIQUE,
                     name VARCHAR(100) NOT NULL,
                     credits INT NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
@@ -70,6 +71,31 @@ class SubjectService {
         return null;
     }
 
+    /**
+     * Kiem tra xem ma mon hoc da ton tai chua (ho tro loai tru ID hien tai khi cap nhat)
+     */
+    public function codeExists($code, $excludeId = null) {
+        $code = strtoupper(trim($code));
+        if (empty($code)) return false;
+
+        $dbConnection = new DBConnection();
+        if ($dbConnection == null) return false;
+        $conn = $dbConnection->getConnection();
+        if ($conn == null) return false;
+
+        $sql = "SELECT COUNT(*) FROM subjects WHERE UPPER(code) = :code";
+        $params = [':code' => $code];
+
+        if (!empty($excludeId)) {
+            $sql .= " AND id != :exclude_id";
+            $params[':exclude_id'] = $excludeId;
+        }
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        return ((int)$stmt->fetchColumn()) > 0;
+    }
+
     public function addSubject(Subject $subject) {
         $dbConnection = new DBConnection();
 
@@ -80,8 +106,8 @@ class SubjectService {
                 $sql = "INSERT INTO subjects (code, name, credits) VALUES (:code, :name, :credits)";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([
-                    'code' => $subject->getCode(),
-                    'name' => $subject->getName(),
+                    'code' => strtoupper(trim($subject->getCode())),
+                    'name' => trim($subject->getName()),
                     'credits' => $subject->getCredits()
                 ]);
             }
@@ -98,8 +124,8 @@ class SubjectService {
                 $sql = "UPDATE subjects SET code = :code, name = :name, credits = :credits WHERE id = :id";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([
-                    'code' => $subject->getCode(),
-                    'name' => $subject->getName(),
+                    'code' => strtoupper(trim($subject->getCode())),
+                    'name' => trim($subject->getName()),
                     'credits' => $subject->getCredits(),
                     'id' => $subject->getId()
                 ]);

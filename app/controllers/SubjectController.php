@@ -12,23 +12,38 @@ class SubjectController
 
     public function add()
     {
+        $code = '';
+        $name = '';
+        $credits = '';
+        $errorMessage = null;
         include_once APP_ROOT . '/app/views/subject/add.php';
     }
 
     public function store()
     {
-        $code = trim($_POST['code'] ?? '');
+        $code = strtoupper(trim($_POST['code'] ?? ''));
         $name = trim($_POST['name'] ?? '');
         $credits = (int)($_POST['credits'] ?? 0);
+        $subjectService = new SubjectService();
 
-        if (!empty($code) && !empty($name) && $credits > 0) {
-            $subject = new Subject(null, $code, $name, $credits);
-            $subjectService = new SubjectService();
-            $subjectService->addSubject($subject);
+        if (empty($code) || empty($name)) {
+            $errorMessage = 'Vui lòng điền đầy đủ mã môn học và tên môn học!';
+        } elseif ($credits <= 0 || $credits > 15) {
+            $errorMessage = 'Số tín chỉ phải từ 1 đến 15!';
+        } elseif ($subjectService->codeExists($code)) {
+            $errorMessage = "Mã môn học \"{$code}\" đã tồn tại trong hệ thống! Vui lòng chọn mã khác.";
+        } else {
+            try {
+                $subject = new Subject(null, $code, $name, $credits);
+                $subjectService->addSubject($subject);
+                header('Location: ?controller=subject&action=index');
+                exit;
+            } catch (PDOException $e) {
+                $errorMessage = "Lỗi lưu dữ liệu: Mã môn học \"{$code}\" đã tồn tại!";
+            }
         }
 
-        header('Location: ?controller=subject&action=index');
-        exit;
+        include APP_ROOT . '/app/views/subject/add.php';
     }
 
     public function edit($id)
@@ -38,6 +53,10 @@ class SubjectController
             $subject = $subjectService->getSubjectById($id);
 
             if ($subject != null) {
+                $code = $subject->getCode();
+                $name = $subject->getName();
+                $credits = $subject->getCredits();
+                $errorMessage = null;
                 include APP_ROOT . '/app/views/subject/edit.php';
             } else {
                 echo 'Không tìm thấy môn học!';
@@ -49,18 +68,35 @@ class SubjectController
 
     public function update($id)
     {
-        $code = trim($_POST['code'] ?? '');
+        $code = strtoupper(trim($_POST['code'] ?? ''));
         $name = trim($_POST['name'] ?? '');
         $credits = (int)($_POST['credits'] ?? 0);
+        $subjectService = new SubjectService();
 
-        if (!empty($id) && !empty($code) && !empty($name) && $credits > 0) {
-            $subject = new Subject($id, $code, $name, $credits);
-            $subjectService = new SubjectService();
-            $subjectService->updateSubject($subject);
+        $subject = $subjectService->getSubjectById($id);
+        if ($subject == null) {
+            echo 'Không tìm thấy môn học!';
+            return;
         }
 
-        header('Location: ?controller=subject&action=index');
-        exit;
+        if (empty($code) || empty($name)) {
+            $errorMessage = 'Vui lòng điền đầy đủ mã môn học và tên môn học!';
+        } elseif ($credits <= 0 || $credits > 15) {
+            $errorMessage = 'Số tín chỉ phải từ 1 đến 15!';
+        } elseif ($subjectService->codeExists($code, $id)) {
+            $errorMessage = "Mã môn học \"{$code}\" đã tồn tại ở một môn học khác! Vui lòng chọn mã khác.";
+        } else {
+            try {
+                $updatedSubject = new Subject($id, $code, $name, $credits);
+                $subjectService->updateSubject($updatedSubject);
+                header('Location: ?controller=subject&action=index');
+                exit;
+            } catch (PDOException $e) {
+                $errorMessage = "Lỗi cập nhật: Mã môn học \"{$code}\" đã tồn tại!";
+            }
+        }
+
+        include APP_ROOT . '/app/views/subject/edit.php';
     }
 
     public function delete($id)
@@ -72,14 +108,12 @@ class SubjectController
 
         $subjectService = new SubjectService();
 
-        // Neu la POST hoac bam nut xac nhan xoa -> Thuc hien xoa trong CSDL
         if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($_POST['btn_confirm_delete'])) {
             $subjectService->deleteSubject($id);
             header('Location: ?controller=subject&action=index');
             exit;
         }
 
-        // Neu la GET -> Hien thi giao dien xac nhan xoa (delete.php)
         $subject = $subjectService->getSubjectById($id);
         if ($subject == null) {
             header('Location: ?controller=subject&action=index');

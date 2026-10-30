@@ -278,6 +278,13 @@
                         </span>
                     </div>
 
+                    <?php if (!empty($errorMessage)): ?>
+                        <div class="alert alert-danger d-flex align-items-center mb-4 py-2 px-3" role="alert" style="border-radius: 12px; font-size: 13.5px;">
+                            <i class="bi bi-exclamation-triangle-fill me-2 fs-5 text-danger flex-shrink-0"></i>
+                            <div><?= htmlspecialchars($errorMessage); ?></div>
+                        </div>
+                    <?php endif; ?>
+
                     <form action="?controller=editSubject&id=<?= $subject->getId() ?>" method="POST">
                         
                         <!-- Ma mon hoc -->
@@ -289,7 +296,7 @@
                                        class="form-input-custom" 
                                        id="code" 
                                        name="code" 
-                                       value="<?= htmlspecialchars($subject->getCode()) ?>" 
+                                       value="<?= htmlspecialchars($code ?? $subject->getCode()) ?>" 
                                        required>
                             </div>
                         </div>
@@ -303,7 +310,7 @@
                                        class="form-input-custom" 
                                        id="name" 
                                        name="name" 
-                                       value="<?= htmlspecialchars($subject->getName()) ?>" 
+                                       value="<?= htmlspecialchars($name ?? $subject->getName()) ?>" 
                                        required>
                             </div>
                         </div>
@@ -319,7 +326,7 @@
                                        name="credits" 
                                        min="1" 
                                        max="10" 
-                                       value="<?= htmlspecialchars($subject->getCredits()) ?>" 
+                                       value="<?= htmlspecialchars((string)($credits ?? $subject->getCredits())) ?>" 
                                        required>
                             </div>
                         </div>

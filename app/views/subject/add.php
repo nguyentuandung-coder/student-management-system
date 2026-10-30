@@ -267,6 +267,13 @@
                         <p class="form-subtitle">Nhập thông tin môn học để bổ sung vào chương trình đào tạo</p>
                     </div>
 
+                    <?php if (!empty($errorMessage)): ?>
+                        <div class="alert alert-danger d-flex align-items-center mb-4 py-2 px-3" role="alert" style="border-radius: 12px; font-size: 13.5px;">
+                            <i class="bi bi-exclamation-triangle-fill me-2 fs-5 text-danger flex-shrink-0"></i>
+                            <div><?= htmlspecialchars($errorMessage); ?></div>
+                        </div>
+                    <?php endif; ?>
+
                     <form action="?controller=addSubject" method="POST">
                         
                         <!-- Ma mon hoc -->
@@ -278,7 +285,7 @@
                                        class="form-input-custom" 
                                        id="code" 
                                        name="code" 
-                                       placeholder="Ví dụ: MH01, INT101..." 
+                                       value="<?= htmlspecialchars($code ?? '') ?>" placeholder="Ví dụ: MH01, INT101..." 
                                        required>
                             </div>
                         </div>
@@ -292,7 +299,7 @@
                                        class="form-input-custom" 
                                        id="name" 
                                        name="name" 
-                                       placeholder="Ví dụ: Lập trình PHP MVC..." 
+                                       value="<?= htmlspecialchars($name ?? '') ?>" placeholder="Ví dụ: Lập trình PHP MVC..." 
                                        required>
                             </div>
                         </div>
@@ -308,7 +315,7 @@
                                        name="credits" 
                                        min="1" 
                                        max="10" 
-                                       placeholder="Ví dụ: 3" 
+                                       value="<?= htmlspecialchars((string)($credits ?? '')) ?>" placeholder="Ví dụ: 3" 
                                        required>
                             </div>
                         </div>
