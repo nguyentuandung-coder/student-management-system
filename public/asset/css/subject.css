@@ -1,0 +1,534 @@
+/* ==========================================================
+   STYLE CHO TRANG QUAN LY MON HOC (SUBJECT MANAGEMENT)
+   ========================================================== */
+
+/* --- 1. DANH SACH MON HOC (INDEX) --- */
+.page-banner {
+    background: linear-gradient(120deg, #ffffff, #f6f1ff);
+    border: 1px solid #eeeeF8;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.page-banner-title h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: #172033;
+}
+
+.page-banner-title p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.table-card {
+    background-color: #ffffff;
+    border: 1px solid #eeeeF5;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(20, 20, 60, 0.03);
+    overflow: hidden;
+}
+
+.table-card-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #f1f3f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.table-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.badge-count {
+    background-color: #f1edff;
+    color: #6938d3;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.table-custom {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.table-custom th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.table-custom td {
+    padding: 16px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.table-custom tbody tr:hover {
+    background-color: #faf9ff;
+}
+
+.badge-code {
+    background-color: #ede9fe;
+    color: #5b21b6;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.badge-credits {
+    background-color: #fef3c7;
+    color: #92400e;
+    font-weight: 700;
+    font-size: 12.5px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.btn-action-edit,
+.btn-action-delete {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-action-edit {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+}
+
+.btn-action-edit:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-action-delete {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+}
+
+.btn-action-delete:hover {
+    background-color: #dc2626;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-add-subject {
+    background-color: #6938d3;
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(105, 56, 211, 0.25);
+}
+
+.btn-add-subject:hover {
+    background-color: #5428b6;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(105, 56, 211, 0.35);
+}
+
+.empty-table-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-table-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background-color: #f1edff;
+    color: #6938d3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 16px;
+}
+
+/* --- 2. FORM THEM & SUA MON HOC (ADD / EDIT) --- */
+.form-card {
+    background-color: #ffffff;
+    border: 1px solid #eeeeF5;
+    border-radius: 16px;
+    padding: 35px 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.form-card-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.form-icon-box {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 16px;
+    border-radius: 18px;
+    background-color: #f1edff;
+    color: #6938d3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 4px 12px rgba(105, 56, 211, 0.12);
+}
+
+.edit-icon-box {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 16px;
+    border-radius: 18px;
+    background-color: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+.form-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+}
+
+.form-subtitle {
+    font-size: 13.5px;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.subject-badge-id {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.form-group-custom {
+    margin-bottom: 20px;
+}
+
+.form-label-custom {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 7px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: #64748b;
+    font-size: 17px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+}
+
+.form-input-custom {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 44px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #111827;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.form-input-custom::placeholder {
+    color: #94a3b8;
+    font-size: 13.5px;
+}
+
+.form-input-custom:focus {
+    border-color: #6938d3;
+    box-shadow: 0 0 0 3.5px rgba(105, 56, 211, 0.12);
+}
+
+.btn-submit-purple {
+    background-color: #6938d3;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(105, 56, 211, 0.28);
+}
+
+.btn-submit-purple:hover {
+    background-color: #5428b6;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(105, 56, 211, 0.35);
+}
+
+.btn-submit-blue {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+}
+
+.btn-submit-blue:hover {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+.btn-cancel-custom {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel-custom:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+/* --- 3. XAC NHAN XOA MON HOC (DELETE) --- */
+.delete-card {
+    background-color: #ffffff;
+    border: 1px solid #eeeeF5;
+    border-radius: 16px;
+    padding: 35px 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.delete-icon-box {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 20px;
+    border-radius: 20px;
+    background-color: #fee2e2;
+    color: #dc2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+}
+
+.delete-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.delete-desc {
+    font-size: 13.5px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.subject-info-box {
+    background-color: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e2e8f0;
+    font-size: 14px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.info-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.info-value {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.warning-note {
+    background-color: #fffbeb;
+    border: 1px solid #fef3c7;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    margin-bottom: 26px;
+}
+
+.btn-confirm-delete {
+    background-color: #dc2626;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-confirm-delete:hover {
+    background-color: #b91c1c;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.btn-cancel {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+/* --- 4. RESPONSIVE --- */
+@media (max-width: 768px) {
+    .table-custom th,
+    .table-custom td {
+        padding: 12px;
+    }
+
+    .page-banner {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-card {
+        padding: 24px 18px;
+    }
+
+    .delete-card {
+        padding: 25px 16px;
+    }
+
+    .info-row {
+        align-items: flex-start;
+    }
+}
