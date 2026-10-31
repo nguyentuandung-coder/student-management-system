@@ -17,13 +17,12 @@ class UserService {
             return;
         }
 
+        // Tao bang users tinh gon chuan cho Quan tri vien
         $sql = "CREATE TABLE IF NOT EXISTS users (
             id INT PRIMARY KEY AUTO_INCREMENT,
-            student_code VARCHAR(50) NULL,
             fullname VARCHAR(100) NOT NULL,
             email VARCHAR(100) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
-            class_name VARCHAR(50) NULL,
             role VARCHAR(20) NOT NULL DEFAULT 'admin',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
@@ -46,8 +45,8 @@ class UserService {
 
             if ($count === 0) {
                 $hashedPassword = password_hash('admin123', PASSWORD_BCRYPT);
-                $insert = $this->conn->prepare("INSERT INTO users (student_code, fullname, email, password, class_name, role) 
-                                                VALUES ('ADMIN01', 'Quản trị viên Hệ thống', 'admin@studyhub.edu.vn', :password, 'Phòng Đào tạo', 'admin')");
+                $insert = $this->conn->prepare("INSERT INTO users (fullname, email, password, role) 
+                                                VALUES ('Quản trị viên Hệ thống', 'admin@studyhub.edu.vn', :password, 'admin')");
                 $insert->execute([':password' => $hashedPassword]);
             }
         } catch (Exception $e) {
@@ -62,30 +61,29 @@ class UserService {
         return (int)$stmt->fetchColumn() > 0;
     }
 
-    public function findByEmailOrCode($identifier) {
-        if ($this->conn == null || empty($identifier)) return null;
+    public function findByEmail($email) {
+        if ($this->conn == null || empty($email)) return null;
 
-        $identifier = trim($identifier);
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :id1 OR student_code = :id2 LIMIT 1");
-        $stmt->execute([
-            ':id1' => strtolower($identifier),
-            ':id2' => strtoupper($identifier)
-        ]);
+        $email = trim($email);
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
+        $stmt->execute([':email' => strtolower($email)]);
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             return new User(
                 $row['id'],
-                $row['student_code'],
                 $row['fullname'],
                 $row['email'],
                 $row['password'],
-                $row['class_name'],
                 $row['role'],
                 $row['created_at']
             );
         }
         return null;
+    }
+
+    public function findByEmailOrCode($identifier) {
+        return $this->findByEmail($identifier);
     }
 
     public function login($identifier, $password) {
@@ -98,9 +96,9 @@ class UserService {
             return ['success' => false, 'message' => 'Vui lòng nhập đầy đủ thông tin đăng nhập!'];
         }
 
-        $user = $this->findByEmailOrCode($identifier);
+        $user = $this->findByEmail($identifier);
         if (!$user) {
-            return ['success' => false, 'message' => 'Tài khoản hoặc mã quản trị viên không tồn tại!'];
+            return ['success' => false, 'message' => 'Tài khoản email quản trị viên không tồn tại!'];
         }
 
         if (!password_verify($password, $user->getPassword())) {

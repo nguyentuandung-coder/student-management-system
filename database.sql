@@ -89,11 +89,9 @@ VALUES
 -- 8. Tao bang users (Nguoi dung: Quan tri vien he thong)
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    student_code VARCHAR(50) NULL,
     fullname VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    class_name VARCHAR(50) NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'admin',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB
@@ -103,7 +101,7 @@ COLLATE=utf8mb4_unicode_ci;
 
 -- 9. Them tai khoan Quan tri vien mac dinh (Admin Account)
 -- Email: admin@studyhub.edu.vn | Mat khau: admin123
-INSERT INTO users (student_code, fullname, email, password, class_name, role)
+INSERT INTO users (fullname, email, password, role)
 VALUES
-('ADMIN01', 'Quản trị viên Hệ thống', 'admin@studyhub.edu.vn', '$2y$10$mEBVpgtoZ4gYT03zEspL.eruBa82ljHYNIcRD6Kk0bAFqN.4PbdcW', 'Phòng Đào tạo', 'admin')
+('Quản trị viên Hệ thống', 'admin@studyhub.edu.vn', '$2y$10$mEBVpgtoZ4gYT03zEspL.eruBa82ljHYNIcRD6Kk0bAFqN.4PbdcW', 'admin')
 ON DUPLICATE KEY UPDATE role = 'admin';

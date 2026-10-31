@@ -60,12 +60,12 @@
         <!-- Form Dang Nhap -->
         <form action="?controller=auth&action=login" method="POST" id="formLogin">
             
-            <!-- Email / Tai khoan -->
+            <!-- Email Dang Nhap -->
             <div class="form-group">
-                <label class="form-label" for="login_identifier">Email hoặc Tài khoản</label>
+                <label class="form-label" for="login_identifier">Email Quản trị viên</label>
                 <div class="input-group-custom">
-                    <span class="input-icon-left"><i class="bi bi-person"></i></span>
-                    <input type="text" 
+                    <span class="input-icon-left"><i class="bi bi-envelope"></i></span>
+                    <input type="email" 
                            class="form-control-custom" 
                            id="login_identifier" 
                            name="identifier" 

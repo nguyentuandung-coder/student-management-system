@@ -43,8 +43,8 @@ class AuthController {
             }
             $_SESSION['user_id'] = $result['user']->getId();
             $_SESSION['user_name'] = $result['user']->getFullname();
+            $_SESSION['user_email'] = $result['user']->getEmail();
             $_SESSION['user_role'] = $result['user']->getRole();
-            $_SESSION['user_code'] = $result['user']->getStudentCode();
 
             header('Location: ?controller=home');
             exit;
